@@ -1,0 +1,298 @@
+# ============================================
+# Git 提交指南 - Flutter 商城项目
+# ============================================
+
+## ✅ 需要提交到 Git 的文件
+
+### 1. 核心源代码（必须提交）
+```
+lib/                          # 所有 Dart 源代码
+├── main.dart                 # 应用入口
+├── core/                     # 核心层（常量、主题、路由、工具等）
+├── data/                     # 数据层（模型、服务、仓库等）
+├── domain/                   # 领域层（业务实体）
+└── presentation/             # 展示层（页面、Bloc、组件）
+```
+
+### 2. 配置文件（必须提交）
+```
+pubspec.yaml                  # 依赖配置（⚠️ 重要！）
+analysis_options.yaml         # 代码分析规则
+.gitignore                    # Git 忽略规则
+```
+
+### 3. 资源文件（必须提交）
+```
+assets/                       # 所有静态资源
+├── images/                   # 图片资源
+├── icons/                    # 图标资源
+├── animations/               # 动画资源
+└── data/                     # 数据文件
+```
+
+### 4. README 和文档（建议提交）
+```
+README.md                     # 项目说明文档
+PROJECT_ARCHITECTURE.txt      # 项目架构说明（可选）
+```
+
+---
+
+## ❌ 不需要提交到 Git 的文件
+
+### 1. 构建产物（自动生成）
+```
+build/                        # 构建输出目录
+.dart_tool/                   # Dart 工具文件
+.pub/                         # Pub 缓存
+.pub-cache/                   # Pub 全局缓存
+.flutter-plugins              # Flutter 插件列表
+.flutter-plugins-dependencies # Flutter 插件依赖
+```
+
+### 2. IDE 配置文件（个人配置）
+```
+.idea/                        # IntelliJ IDEA / Android Studio
+.vscode/                      # VS Code（可选提交 launch.json）
+*.iml                         # IntelliJ 模块文件
+*.ipr                         # IntelliJ 项目文件
+*.iws                         # IntelliJ 工作区文件
+```
+
+### 3. 代码生成器生成的文件（可选不提交）
+```
+**/*.g.dart                   # JSON/Hive 序列化代码
+**/*.freezed.dart            # Freezed 生成代码
+**/*.mocks.dart              # Mock 测试代码
+```
+
+**说明**：这些文件可以通过 `flutter pub run build_runner build` 重新生成
+
+### 4. 平台和系统文件
+```
+.DS_Store                     # macOS 系统文件
+ios/**/*.pbxuser              # Xcode 用户文件
+ios/**/*.perspectivev3        # Xcode 视图设置
+ios/**/xcuserdata             # Xcode 用户数据
+macos/**/*.pbxuser            # macOS Xcode 用户文件
+```
+
+### 5. 敏感信息（⚠️ 绝对不要提交！）
+```
+.env                          # 环境变量文件
+.env.local                    # 本地环境配置
+**/api_keys.dart              # API 密钥
+**/secrets.dart               # 密钥文件
+keystore/                     # 签名文件
+*.jks                         # Java 密钥库
+*.keystore                    # 密钥库文件
+```
+
+---
+
+## 📝 推荐的提交流程
+
+### 第一步：初始化 Git 仓库（如果还没有）
+```bash
+cd /Users/shudelin/StudioProjects/flutter_app
+git init
+```
+
+### 第二步：查看所有文件状态
+```bash
+git status
+```
+
+### 第三步：添加需要提交的文件
+```bash
+# 添加所有未被忽略的文件
+git add .
+
+# 或者选择性添加
+git add lib/
+git add pubspec.yaml
+git add assets/
+git add .gitignore
+git add analysis_options.yaml
+```
+
+### 第四步：查看将要提交的内容
+```bash
+git status
+git diff --cached
+```
+
+### 第五步：提交代码
+```bash
+git commit -m "feat: 初始化商城项目架构
+
+- 完成核心层搭建（constants, theme, routes, utils）
+- 完成数据层搭建（models, services, repositories）
+- 完成展示层框架（pages, blocs, widgets）
+- 集成 Bloc 状态管理
+- 集成 Hive 本地存储
+- 集成 Dio 网络请求
+- 配置 Material Design 3 主题
+- 支持屏幕适配"
+```
+
+### 第六步：关联远程仓库并推送
+```bash
+# 关联远程仓库（替换为您的仓库地址）
+git remote add origin https://github.com/your-username/your-repo.git
+
+# 推送到远程
+git push -u origin main
+```
+
+---
+
+## 🔧 常用 Git 命令
+
+### 查看状态
+```bash
+git status
+```
+
+### 查看修改内容
+```bash
+git diff           # 查看未暂存的修改
+git diff --cached  # 查看已暂存的修改
+```
+
+### 撤销操作
+```bash
+git reset HEAD <file>    # 取消暂存
+git checkout -- <file>   # 放弃工作区修改
+```
+
+### 查看提交历史
+```bash
+git log
+git log --oneline        # 简洁模式
+git log --graph          # 图形化显示分支
+```
+
+---
+
+## 💡 最佳实践建议
+
+### 1. 提交频率
+- ✅ 频繁提交，小步快跑
+- ✅ 每个功能点单独提交
+- ❌ 避免一次性提交大量修改
+
+### 2. 提交信息规范
+使用约定式提交（Conventional Commits）：
+
+```
+feat:     新功能
+fix:      修复 bug
+docs:     文档更新
+style:    代码格式调整
+refactor: 重构代码
+test:     测试相关
+chore:    构建/工具链相关
+```
+
+示例：
+```bash
+git commit -m "feat: 实现用户登录功能"
+git commit -m "fix: 修复购物车数量计算错误"
+git commit -m "docs: 更新 README 安装说明"
+```
+
+### 3. 分支管理
+```bash
+# 主分支
+main/master      # 生产环境代码
+
+# 开发分支
+develop          # 开发环境代码
+
+# 功能分支
+feature/login    # 登录功能
+feature/cart     # 购物车功能
+
+# 修复分支
+fix/bug-123      # 修复 123 号 bug
+```
+
+### 4. 保护敏感信息
+```bash
+# 创建环境变量模板文件
+cat > .env.example << EOF
+# API 配置
+API_BASE_URL=http://localhost:8080/api
+API_VERSION=v1
+
+# 第三方服务配置
+WECHAT_APP_ID=your_app_id
+WECHAT_APP_SECRET=your_app_secret
+EOF
+
+# ⚠️ 将真实配置添加到 .gitignore
+echo ".env" >> .gitignore
+```
+
+---
+
+## 📦 项目关键文件清单
+
+### 必须提交的核心文件
+- [x] `lib/main.dart` - 应用入口
+- [x] `lib/core/` - 核心配置
+- [x] `lib/data/` - 数据层
+- [x] `lib/presentation/` - UI 层
+- [x] `pubspec.yaml` - 依赖配置
+- [x] `.gitignore` - Git 忽略规则
+- [x] `assets/` - 资源文件
+
+### 可选提交的文件
+- [ ] `PROJECT_ARCHITECTURE.txt` - 架构文档
+- [ ] `README.md` - 项目说明
+- [ ] `.vscode/` - VS Code 配置（团队统一时提交）
+
+### 绝对不要提交的文件
+- [ ] `.env` - 环境变量
+- [ ] `build/` - 构建产物
+- [ ] `.dart_tool/` - 工具文件
+- [ ] `.pub/` - 包缓存
+- [ ] `*.g.dart` - 生成代码（除非团队要求）
+
+---
+
+## 🚨 注意事项
+
+### 1. 首次提交前检查
+```bash
+# 确保 .gitignore 已生效
+git check-ignore -v build/
+git check-ignore -v .dart_tool/
+```
+
+### 2. 如果不小心提交了敏感文件
+```bash
+# 从 Git 历史中彻底删除
+git filter-branch --force --index-filter \
+  'git rm --cached --ignore-unmatch path/to/secret' \
+  --prune-empty --tag-name-filter cat -- --all
+  
+# 强制推送到远程
+git push origin --force --all
+```
+
+### 3. 团队协作时的额外配置
+```bash
+# 设置用户名和邮箱
+git config --global user.name "Your Name"
+git config --global user.email "your.email@example.com"
+
+# 查看配置
+git config --list
+```
+
+---
+
+最后更新：2026-03-28
+项目版本：v1.0.0

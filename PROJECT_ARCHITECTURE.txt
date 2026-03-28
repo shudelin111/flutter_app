@@ -1,0 +1,351 @@
+# ============================================
+# 综合商城 Flutter 应用 - 项目架构说明
+# ============================================
+# 技术栈：Flutter + Bloc + Hive + Dio + Retrofit + Material Design 3
+# 后端：Spring Boot (RESTful API)
+# 响应格式：{success: bool, code: String, message: String, data: Object}
+# ============================================
+
+## 📁 项目目录结构
+
+```
+lib/
+├── main.dart                          # 应用入口（已创建）
+│
+├── core/                              # 核心层（基础设施）
+│   ├── constants/                     # 常量定义
+│   │   ├── api_constants.dart         # API 相关常量（BaseURL、超时等）✅
+│   │   ├── app_constants.dart         # 应用常量（版本、缓存时间等）✅
+│   │   └── storage_keys.dart          # 存储键名（Hive、SharedPreferences）✅
+│   │
+│   ├── theme/                         # 主题配置
+│   │   ├── app_colors.dart            # 颜色定义（Material Design 3）✅
+│   │   └── app_theme.dart             # 主题样式（组件主题配置）✅
+│   │
+│   ├── routes/                        # 路由管理
+│   │   └── app_routes.dart            # 路由名称定义 ✅
+│   │
+│   └── utils/                         # 工具类
+│       └── validator.dart             # 表单验证工具 ✅
+│
+├── data/                              # 数据层
+│   ├── models/                        # 数据模型
+│   │   ├── base_response.dart         # 基础响应模型 ✅
+│   │   ├── user_model.dart            # 用户模型 ✅
+│   │   ├── product_model.dart         # 商品模型（待创建）
+│   │   ├── order_model.dart           # 订单模型（待创建）
+│   │   └── cart_model.dart            # 购物车模型（待创建）
+│   │
+│   ├── repositories/                  # 仓库层（数据操作）
+│   │   ├── user_repository.dart       # 用户仓库（待创建）
+│   │   ├── product_repository.dart    # 商品仓库（待创建）
+│   │   ├── order_repository.dart      # 订单仓库（待创建）
+│   │   └── cart_repository.dart       # 购物车仓库（待创建）
+│   │
+│   ├── datasources/                   # 数据源
+│   │   ├── remote/                    # 远程数据源（API）
+│   │   │   ├── user_api_service.dart  # 用户 API 服务（待创建）
+│   │   │   └── product_api_service.dart # 商品 API 服务（待创建）
+│   │   └── local/                     # 本地数据源（Hive）
+│   │       └── user_local_service.dart # 用户本地服务（待创建）
+│   │
+│   └── services/                      # 服务层
+│       ├── http_service.dart          # HTTP 服务（Dio 封装）✅
+│       ├── storage_service.dart       # Hive 存储服务 ✅
+│       └── navigation_service.dart    # 导航服务（待创建）
+│
+├── domain/                            # 领域层（业务逻辑）
+│   ├── entities/                      # 业务实体
+│   │   ├── user.dart                  # 用户实体（待创建）
+│   │   └── product.dart               # 商品实体（待创建）
+│   └── repositories/                  # 仓库接口（抽象）
+│       └── user_repository_interface.dart # 用户仓库接口（待创建）
+│
+└── presentation/                      # 展示层（UI）
+    ├── blocs/                         # Bloc 状态管理
+    │   ├── auth/                      # 认证模块
+    │   │   ├── auth_bloc.dart         # 认证 Bloc（待创建）
+    │   │   ├── auth_event.dart        # 认证事件（待创建）
+    │   │   └── auth_state.dart        # 认证状态（待创建）
+    │   ├── product/                   # 商品模块
+    │   │   ├── product_bloc.dart      # 商品 Bloc（待创建）
+    │   │   ├── product_event.dart     # 商品事件（待创建）
+    │   │   └── product_state.dart     # 商品状态（待创建）
+    │   ├── cart/                      # 购物车模块
+    │   │   ├── cart_bloc.dart         # 购物车 Bloc（待创建）
+    │   │   ├── cart_event.dart        # 购物车事件（待创建）
+    │   │   └── cart_state.dart        # 购物车状态（待创建）
+    │   └── order/                     # 订单模块
+    │       ├── order_bloc.dart        # 订单 Bloc（待创建）
+    │       ├── order_event.dart       # 订单事件（待创建）
+    │       └── order_state.dart       # 订单状态（待创建）
+    │
+    ├── pages/                         # 页面
+    │   ├── splash/                    # 启动页
+    │   │   └── splash_page.dart       # 启动页 ✅
+    │   ├── login/                     # 登录页（待创建）
+    │   ├── home/                      # 首页
+    │   │   └── home_page.dart         # 首页框架 ✅
+    │   ├── category/                  # 分类页（待创建）
+    │   ├── product/                   # 商品页（待创建）
+    │   ├── cart/                      # 购物车页（待创建）
+    │   ├── order/                     # 订单页（待创建）
+    │   └── user/                      # 用户中心（待创建）
+    │
+    └── widgets/                       # 公共组件
+        ├── custom_app_bar.dart        # 自定义标题栏（待创建）
+        ├── loading_widget.dart        # 加载组件（待创建）
+        ├── empty_widget.dart          # 空状态组件（待创建）
+        ├── error_widget.dart          # 错误组件（待创建）
+        └── product_card.dart          # 商品卡片（待创建）
+
+assets/                                # 资源文件
+├── images/                            # 图片资源
+├── icons/                             # 图标资源
+├── animations/                        # 动画资源（Lottie）
+└── data/                              # 数据文件（JSON）
+```
+
+---
+
+## ✅ 已完成的功能模块
+
+### 1. 项目配置
+- [x] `pubspec.yaml` - 完整的依赖配置（Bloc、Hive、Retrofit 等）
+- [x] 代码生成器配置（build_runner）
+
+### 2. 核心层
+- [x] API 常量配置（多环境支持）
+- [x] 应用常量配置
+- [x] 存储键名统一管理
+- [x] Material Design 3 颜色系统
+- [x] Material Design 3 主题配置（浅色 + 深色）
+- [x] 路由名称定义
+- [x] 表单验证工具类
+
+### 3. 数据服务层
+- [x] HTTP 服务封装（Dio）
+  - 全局配置
+  - 拦截器（Token 自动添加）
+  - 统一错误处理
+  - 统一响应处理（ApiResponse）
+  - GET/POST/PUT/DELETE请求
+  - 文件上传/下载
+- [x] Hive 存储服务封装
+  - 初始化配置
+  - Box 管理
+  - CRUD 操作
+
+### 4. 数据模型
+- [x] BaseResponse - 基础响应模型
+- [x] UserModel - 用户信息模型
+
+### 5. 页面
+- [x] SplashPage - 启动页（带动画）
+- [x] HomePage - 首页框架（底部导航）
+
+### 6. 应用入口
+- [x] main.dart - 完整配置
+  - 服务初始化
+  - 依赖注入（GetIt）
+  - Material Design 3 主题
+  - 屏幕适配（ScreenUtil）
+
+---
+
+## 🚀 快速开始指南
+
+### 第一步：安装依赖
+
+```bash
+# 获取依赖包
+flutter pub get
+
+# 运行代码生成器（生成.g.dart 文件）
+flutter pub run build_runner build --delete-conflicting-outputs
+```
+
+### 第二步：配置后端 API
+
+修改 `lib/core/constants/api_constants.dart`：
+
+```dart
+// 开发环境服务器地址
+static const String baseUrlDev = 'http://your-server-ip:8080/api';
+
+// 切换到生产环境时修改这里
+static const String currentEnv = 'dev'; // 改为 'prod'
+```
+
+### 第三步：运行应用
+
+```bash
+# 运行到模拟器或真机
+flutter run
+
+# 或者使用 IDE 的运行按钮
+```
+
+---
+
+## 📝 下一步待完成
+
+### 高优先级（核心功能）
+
+1. **用户模块**
+   - [ ] 创建 ProductModel、OrderModel、CartModel
+   - [ ] 创建 API 服务接口（Retrofit）
+   - [ ] 创建 Repository 层
+   - [ ] 创建 Auth Bloc（登录/注册）
+   - [ ] 创建 LoginPage（登录页）
+
+2. **商品模块**
+   - [ ] 创建商品列表页
+   - [ ] 创建商品详情页
+   - [ ] 创建商品分类页
+   - [ ] 创建 Product Bloc
+
+3. **购物车模块**
+   - [ ] 创建购物车页面
+   - [ ] 创建购物车 Bloc
+   - [ ] 实现加减数量、删除等功能
+
+4. **订单模块**
+   - [ ] 创建订单列表页
+   - [ ] 创建订单详情页
+   - [ ] 创建订单确认页
+   - [ ] 创建 Order Bloc
+
+### 中优先级（增强功能）
+
+- [ ] 搜索功能
+- [ ] 收藏功能
+- [ ] 地址管理
+- [ ] 支付集成
+- [ ] 图片上传
+- [ ] 推送通知
+
+---
+
+## 🔧 开发规范
+
+### 1. 代码注释
+所有代码必须包含详细的中文注释，包括：
+- 文件头说明（功能描述）
+- 类说明
+- 方法说明（参数、返回值）
+- 关键逻辑说明
+
+### 2. 命名规范
+- 文件名：小写 + 下划线（如：`user_model.dart`）
+- 类名：大驼峰（如：`UserModel`）
+- 方法/变量：小驼峰（如：`getUserInfo`）
+- 常量：大驼峰或全大写（如：`ApiConstants`、`BASE_URL`）
+
+### 3. 分层架构
+- **UI 层（Presentation）**：只负责显示和用户交互
+- **业务层（Domain）**：处理业务逻辑
+- **数据层（Data）**：处理数据来源（API、本地存储）
+
+### 4. 状态管理
+使用 Bloc 模式进行状态管理：
+- Event：用户操作或外部触发的事件
+- State：页面的状态（加载中、成功、失败等）
+- Bloc：处理 Event，更新 State
+
+---
+
+## 📚 技术文档参考
+
+### 官方文档
+- Flutter: https://flutter.dev/docs
+- Bloc: https://bloclibrary.dev
+- Dio: https://pub.dev/packages/dio
+- Hive: https://docs.hivedb.dev
+- Retrofit: https://pub.dev/packages/retrofit
+
+### Material Design 3
+- 设计规范：https://m3.material.io
+- Flutter 实现：https://docs.flutter.dev/ui/widgets/material
+
+---
+
+## 💡 常见问题
+
+### Q1: 如何添加新的 API 接口？
+1. 在 `lib/data/datasources/remote/` 创建新的 API 服务文件
+2. 使用 Retrofit 注解定义接口方法
+3. 在 Repository 层调用 API 服务
+4. 在 Bloc 中使用 Repository
+
+### Q2: 如何添加新的页面？
+1. 在 `lib/presentation/pages/` 创建页面文件
+2. 在 `lib/core/routes/app_routes.dart` 添加路由名称
+3. 在 `main.dart` 的 routes 表中注册路由
+4. 使用 `Navigator.pushNamed(context, AppRoutes.xxx)` 跳转
+
+### Q3: 如何使用 Bloc？
+```dart
+// 1. 创建 Event
+abstract class ProductEvent extends Equatable {}
+class LoadProducts extends ProductEvent {}
+
+// 2. 创建 State
+abstract class ProductState extends Equatable {}
+class ProductsLoading extends ProductState {}
+class ProductsLoaded extends ProductState {
+  final List<Product> products;
+}
+
+// 3. 创建 Bloc
+class ProductBloc extends Bloc<ProductEvent, ProductState> {
+  @override
+  Stream<ProductState> mapEventToState(ProductEvent event) async* {
+    if (event is LoadProducts) {
+      yield ProductsLoading();
+      // 加载数据...
+      yield ProductsLoaded(products);
+    }
+  }
+}
+
+// 4. 在页面中使用
+BlocProvider(
+  create: (_) => ProductBloc(),
+  child: BlocBuilder<ProductBloc, ProductState>(
+    builder: (context, state) {
+      if (state is ProductsLoading) return LoadingWidget();
+      if (state is ProductsLoaded) return ProductList(state.products);
+      return Container();
+    },
+  ),
+)
+```
+
+---
+
+## 🎉 项目亮点
+
+1. ✅ **企业级架构**：清晰的分层设计，易于维护和扩展
+2. ✅ **详细注释**：每个文件都有完整的中文注释
+3. ✅ **Material Design 3**：最新的 UI 设计规范
+4. ✅ **完整的网络封装**：统一的错误处理、响应处理
+5. ✅ **高性能本地存储**：Hive 数据库支持
+6. ✅ **屏幕适配**：完美支持各种尺寸的设备
+7. ✅ **依赖注入**：使用 GetIt 进行服务定位
+8. ✅ **状态管理**：Bloc 模式，单向数据流
+
+---
+
+## 📞 技术支持
+
+如有问题，请查阅：
+1. 本项目中的注释说明
+2. 各库的官方文档
+3. Flutter 官方文档
+
+---
+
+**最后更新**: 2026-03-28
+**版本**: v1.0.0
+**状态**: 框架搭建完成，核心功能待开发
